@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}| Question Papers{% endblock title %}
+
+{% block content %}
+    <!-- Hero -->
+    <div class="px-4 py-5 text-center" id="hero">
+        <h1 class="display-5 py-5 fw-bold">Search</h1>
+        <div class="col-lg-6 mx-auto py-5">
+            <p class="lead mb-4">Download NCV and Report 191 (Nated) Question Papers</p>
+        </div>
+    </div>
+
+    <!-- Search form -->
+    <div class="container py-4 border-bottom">
+        <div class="row justify-content-center">
+            <h5 class="text-center mb-4 mt-5">Enter the name of a subject and click on search</h5>
+            <form action="{% url 'search' %}">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-auto">
+                        <label for="keyword">Type subject name</label>
+                    </div>
+                    <div class="col-lg-4">
+                        <input class="form-control" id="keyword" type="text" name="keyword" value="{{ values.keyword }}">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Featured Question Papers -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-7">
+            {% if subjects %}
+                <h3 class="p-5 text-center lead">Click on a subject to view a list of available question papers on it</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Subject</th>
+                            <th scope="col">Level</th>
+                            <th>NCV/Report 191</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subject in subjects %}
+                            <tr>
+                                <th><a href="{% url 'subject' subject.id %}" class="text-decoration-none text-body">{{ subject.name }}</a></th>
+                                <td>{{ subject.level }}</td>
+                                <td>{{subject.ncv_or_report191}}</td>
+                                
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-center text-danger border border-danger mt-5 p-4 rounded">
+                    Sorry we could not find any question papers with that name, try another name</p>
+            {% endif %}
+
+            <a href="{% url 'subjects' %}" class="btn btn-primary my-5 py-2"><i class="bi bi-chevron-left"></i> Go to subjects</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+    

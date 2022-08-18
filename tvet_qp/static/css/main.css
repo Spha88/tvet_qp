@@ -1,0 +1,6 @@
+#hero {
+    background: url('../images/bg2.jpg') no-repeat right top;
+    background-size: cover;
+    color: #fff;
+    font-weight: bold !important;
+}

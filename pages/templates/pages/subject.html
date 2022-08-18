@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %} | {{ subject.name }}{% endblock title %}
+
+{% block content %}
+    <!-- Hero -->
+    <div class="px-4 py-3 text-center" id="hero">
+        <h1 class="display-5 pt-5 fw-bold">
+            {{ subject.name }} 
+            {% if "N" in subject.level %}
+                {{subject.level}} 
+            {% else %} 
+                Level {{subject.level}} 
+            {% endif %}
+        </h1>
+        <h3> 
+            Question Papers
+        </h3>
+        <div class="col-lg-4 mx-auto py-5 ">
+            <p class="lead mb-4 border rounded p-2 bg-dark">Click on a question paper to download it</p>
+        </div>
+    </div>
+
+    
+    <div class="container">
+        <!-- Breadcrums -->
+        <div class="row justify-content-center ps-1">
+            <div class="col mt-4 mb-2">
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                      <li class="breadcrumb-item"><a href="{% url 'subjects' %}">subjects</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">
+                        {{ subject.name }}
+                        {% if "N" in subject.level %}
+                            {{subject.level}} 
+                        {% else %} 
+                            Level {{subject.level}} 
+                        {% endif %}
+                    </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Featured Question Papers -->
+        <div class="row">
+            {% if question_papers %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Year</th>
+                        <th scope="col">Exam Period</th>
+                        <th scope="col">Question Paper</th>
+                        <th scope="col">Marking guideline</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for qp in question_papers %}
+                        <tr>
+                            <td>{{ qp.subject.name }}</td>
+                            <td>{{ qp.year }}</td>
+                            <td>{{ qp.exam_period }}</td>
+                            <td>
+                                <a 
+                                    class="btn btn-primary btn-xs text-decoration-none" 
+                                    style="--bs-btn-font-size: .75rem"
+                                    
+                                    href="{{ qp.question_paper.url }}"><i class="bi bi-file-earmark-arrow-down" style="font-size: 1rem"></i> Question Paper
+                                </a>
+                            </td>
+                            <td>
+                                {% if qp.marking_guideline %}
+                                    <a 
+                                        class="btn btn-primary text-decoration-none" 
+                                        style="--bs-btn-font-size: .75rem"
+                                        href="{{ qp.marking_guideline.url }}"><i class="bi bi-file-earmark-arrow-down" style="font-size: 1rem"></i> Marking guide
+                                    </a>
+                                    {% else %}
+                                        <span class="text-danger" style="font-size: .80rem; font-weight: bold">No Marking Guideline</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+                <h4 class="text-center pb-3">No question papers added for {{ subject }}</h4>
+                <div class="text-center">
+
+                    <a class="btn btn-danger px-4" href="{% url 'subjects' %}">Back</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% endblock content %}

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if 'N' in level %}
+        | {{ level }}
+    {% else %}
+        | Level {{ level }}
+    {% endif %}
+    Question Papers
+{% endblock title %}
+
+{% block content %}
+    <!-- Hero -->
+    <div class="px-4 py-5 text-center" id="hero">
+        <h1 class="display-5 py-5 fw-bold"> 
+            {% if 'N' in level %}
+                {{ level }}
+            {% else %}
+                Level {{ level }}
+            {% endif %}
+            Question Papers
+        </h1>
+        <div class="col-lg-6 mx-auto py-5">
+            <p class="lead mb-4 border rounded p-2 bg-dark">Click on a subject to view available question papers</p>
+        </div>
+    </div>
+
+    
+    <div class="container">
+        <!-- Breadcrums -->
+        <div class="row justify-content-center ps-1">
+            <div class="col-md-9 mt-4 mb-2">
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                      <li class="breadcrumb-item"><a href="{% url 'subjects' %}">subjects</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">
+                        {% if 'N' in level %}
+                            {{ level }}
+                        {% else %}
+                            Level {{ level }}
+                        {% endif %}
+                        Question Papers
+                    </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- Featured Question Papers -->
+        <div class="row justify-content-center">
+            <div class="col-md-9">
+                {% if subjects %}
+                <h3 class="p-5 text-center lead">Click on a subject to view a list of available question papers on it</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Subject</th>
+                            <th scope="col">Level</th>
+                            <th>NCV/Report 191</th>
+                            <th scope="col">Group</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subject in subjects %}
+                            <tr>
+                                <th><a href="{% url 'subject' subject.id %}" class="text-decoration-none text-body">{{ subject.name }}</a></th>
+                                <td>{{ subject.level }}</td>
+                                <td>{{subject.ncv_or_report191}}</td>
+                                <td>{{ subject.fundamental_or_vocational }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="alert alert-danger text-center p-5 my-5" role="alert">
+                    <h2>No subjects added for this level yet.</h2>
+                    <p>Please come back after later or request the administrators to add a question paper by clicking on contact us</p>
+                </div>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+    

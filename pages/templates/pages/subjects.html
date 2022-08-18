@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}| Subjects{% endblock title %}
+
+{% block content %}
+    <!-- Hero -->
+    <div class="px-4 py-5 text-center" id="hero">
+        <h1 class="display-5 py-5 fw-bold">Subjects</h1>
+        <div class="col-lg-6 mx-auto py-5">
+            <p class="lead mb-4 border rounded p-2 bg-dark">Click on a subject to view available question papers</p>
+        </div>
+    </div>
+
+    
+    <div class="container">
+        
+        <!-- Breadcrums -->
+        <div class="row justify-content-center">
+            <div class="col-md-9 mt-4 mb-3">
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">Subjects</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Featured Question Papers -->
+        <div class="row justify-content-center">
+            <div class="col-md-9">
+                {% if subjects %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Subject</th>
+                            <th scope="col">Level</th>
+                            <th>NCV/Report 191</th>
+                            <th class="d-none d-md-table-cell" scope="col">Group</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subject in subjects %}
+                            <tr>
+                                <td scope="col"><a href="{% url 'subject' subject.id %}" class="text-decoration-none text-body">{{ subject.name }}</a></td>
+                                <td scope="col">{{ subject.level }}</td>
+                                <td scope="col">{{subject.ncv_or_report191}}</td>
+                                <td class="d-none d-md-table-cell" scope="col" >{{ subject.fundamental_or_vocational }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <h2>No subjects added yet</h2>
+            {% endif %}
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="row mt-3">
+            {% if subjects.has_other_pages %}
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        {% if subjects.has_previous %}
+                            <li class="page-item">
+                                <a href="?page={{ subjects.previous_page_number }}" class="page-link">Previous</a>
+                            </li>
+                        {% endif %}
+                        
+                    
+                        {% for i in subjects.paginator.page_range %}
+                            {% if subjects.number == i %}
+                                <li class="page-item active">
+                                    <a class="page-link" >{{ i }}</a>
+                                </li>
+                            {% else %}  
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if subjects.has_next %}
+                            <li class="page-item">
+                                <a href="?page={{ subjects.next_page_number}}" class="page-link" href="#">Next</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+            
+        </div>
+    </div>
+
+{% endblock content %}
+
+    
